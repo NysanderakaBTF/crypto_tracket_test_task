@@ -22,5 +22,5 @@ from prices.views import get_price_history
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('prices', get_price_history)
+    path('prices', get_price_history, name="price_history"),
 ]

@@ -49,7 +49,8 @@ class CheckPriceSingleton:
 
 class CryptoTrackerConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.ticket = self.scope["url_route"]["kwargs"]["price_pair"].lower()
+        print(self.scope)
+        self.ticket = self.scope["path"].split("/")[-1] 
         self.ticket_group = "crypto_prices_" + self.ticket
         
         await self.channel_layer.group_add(self.ticket_group, self.channel_name)
