@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -75,10 +76,10 @@ WSGI_APPLICATION = 'crypto_tracker.wsgi.application'
 
 ASGI_APPLICATION = "crypto_tracker.asgi.application"
 CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [(os.environ.get('REDIS_HOST', 'localhost'), int(os.environ.get('REDIS_PORT', '6379')))],
         },
     },
 }
@@ -88,14 +89,13 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "OPTIONS": {
-            "host":"localhost",
-            "user":"USER",
-            "dbname":"NAME",
-            "port":"5432",
-        },
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', 'dbname'),
+        'USER': os.environ.get('DB_USER', 'user'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'password'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 

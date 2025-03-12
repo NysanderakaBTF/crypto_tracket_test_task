@@ -31,7 +31,7 @@ class CheckPriceSingleton:
             while True:
                 data = await ws.recv()
                 data = json.loads(data)
-                print(f"{self.ticker} received: {data}")
+                # print(f"{self.ticker} received: {data}")
                 
                 price = float(data['p'])
                 self.buffers[self.ticker][data['s']].append(price)
@@ -39,7 +39,7 @@ class CheckPriceSingleton:
                     group_name,
                     {
                         'type': 'price_update',
-                        'message': {'symbol': data['s'], 'price': str(price)}
+                        'message': data
                     }
                 )
 
@@ -73,7 +73,7 @@ class CryptoTrackerConsumer(AsyncWebsocketConsumer):
                         average_price = mean(prices)
                         await sync_to_async(Price.objects.create)(ticket=symbol, price=average_price)
                         buffer[symbol] = []
-                        print(f"Saved {symbol}: {average_price}")
+                        # print(f"Saved {symbol}: {average_price}")
                     except Exception as e:
                         print(f"Error saving {symbol}: {e}")
             await asyncio.sleep(10)
